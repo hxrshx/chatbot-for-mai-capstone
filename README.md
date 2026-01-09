@@ -1,53 +1,78 @@
 # CAIRA - THWS MAI Chatbot
 
-Chatbot for THWS Master of Artificial Intelligence students.
+AI assistant for THWS Master of Artificial Intelligence students. Get answers about courses, admissions, housing, and campus life.
 
 ## Setup
 
 **Requirements:**
 - Python 3.13+
 - 8GB RAM
+- Tesseract OCR (for PDF processing)
 
-**Install:**
+**Quick Setup:**
 ```bash
+# Clone and setup
+git clone <your-repo-url>
+cd mai-llm
+
+# Create environment and install dependencies
 python -m venv venv
-source venv/bin/activate
+source venv/bin/activate  # On Windows: venv\Scripts\activate
 pip install -r requirements.txt
-bash scripts/download_qwen.sh
-```
 
-**Process documents:**
-```bash
+# Download AI model (~3GB)
+bash scripts/download_qwen.sh
+
+# Process documents and create knowledge base
 python scripts/pre_processing.py
 python scripts/generate_embeddings.py --input preprocessed/rag_chunks.jsonl --output preprocessed/embeddings
 ```
 
-## Running
+## Running CAIRA
 
-Start backend:
+**Start the chatbot:**
 ```bash
+# Terminal 1: Backend
 python backend/main.py
-```
 
-Start frontend (new terminal):
-```bash
+# Terminal 2: Frontend (new terminal)
 python frontend/app.py
 ```
 
-Open: http://localhost:7860
+**Access:** http://localhost:7860
 
-## Adding Documents
+## What You Can Ask
 
-1. Put PDFs in `source-docs/`
-2. Run preprocessing and embeddings steps again
-3. Restart backend
+- **Admissions**: "What are the admission requirements?"
+- **Courses**: "What subjects are in the AI Master program?"
+- **Housing**: "Where can I find accommodation in Würzburg?"
+- **Campus**: "How do I register for exams?"
+- **General**: "What is the semester ticket?"
 
-## Info
+## System Info
 
-- 323 chunks from 55 THWS documents
-- Qwen 1.5B model (CPU)
+- 340 chunks from 59 THWS documents
+- Qwen2.5-1.5B model (CPU optimized)
 - German and English support
-- 30-60 second response time```
+- ~30-60 second response time
+
+## Troubleshooting
+
+**Backend won't start:**
+- Check if port 8000 is free: `lsof -ti:8000`
+- Kill conflicting process: `kill <process_id>`
+
+**No responses:**
+- Ensure backend is running: `curl http://localhost:8000/health`
+- Check frontend connects to backend
+
+**Model download fails:**
+- Check internet connection
+- Ensure you have ~3GB free space
+
+## Made for Students
+
+This is a student project designed to help THWS MAI students navigate their academic journey. The chatbot contains official THWS documents and information relevant to Master of AI students.```
 
 pip install -r requirements.txtUser → Gradio UI (Port 7860) → FastAPI Backend (Port 8000) → RAG System → Qwen LLM
 
